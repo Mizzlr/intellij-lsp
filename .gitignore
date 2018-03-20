@@ -1,9 +1,10 @@
 idea/
-target/
+**/target/
 .idea/
 langserver.*
 **/.settings
 **/build
 **/.classpath
 **/.project
-project/*
+**/tmp
+lib/

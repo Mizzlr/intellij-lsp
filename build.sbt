@@ -3,6 +3,18 @@ ideaBuild in ThisBuild := "173.3727.127" // Released November 28, 2017
 // Download the IDEA SDK on startup
 onLoad in Global := ((s: State) => { "updateIdea" :: s}) compose (onLoad in Global).value
 
+// assemblyMergeStrategy in assembly := {
+//   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+//   case x => MergeStrategy.first
+// }
+
+assemblyMergeStrategy in assembly := {
+  case PathList("/Users/mizzlr/intellij-lsp/idea/173.3727.127/lib/") => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
 lazy val commonSettings = Seq(
   scalaSource       in Compile  := baseDirectory.value / "src",
   scalaSource       in Test     := baseDirectory.value / "test",
@@ -47,7 +59,6 @@ lazy val `intellij-lsp` = (project in file("intellij-lsp")).
     ideaInternalPlugins := Seq(
       "IntelliLang",
     ),
-
     libraryDependencies ++= Seq(
       "org.eclipse.lsp4j" % "org.eclipse.lsp4j" % "0.3.0",
       "io.get-coursier" %% "coursier" % "1.0.0",
@@ -55,6 +66,9 @@ lazy val `intellij-lsp` = (project in file("intellij-lsp")).
       "com.vladsch.flexmark" % "flexmark" % "0.28.18"
     ),
   )
+
+// enablePlugins(SbtIdeaPlugin)
+// assemblyExcludedJars in assembly := ideaFullJars.value
 
 // lazy val `intellij-lsp-dotty` = (project in file("intellij-lsp-dotty")).
 //   enablePlugins(SbtIdeaPlugin).

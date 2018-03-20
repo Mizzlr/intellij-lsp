@@ -14,7 +14,7 @@ import org.eclipse.lsp4j._
 import org.eclipse.lsp4j.services.{LanguageClient, LanguageServer}
 
 import scala.collection.JavaConverters._
-
+import com.github.gtache.lsp.diagnostics.DiagnosticsManager
 
 /**
   * Implementation of the LanguageClient
@@ -51,6 +51,7 @@ class LanguageClientImpl extends LanguageClient {
   override def publishDiagnostics(publishDiagnosticsParams: PublishDiagnosticsParams): Unit = {
     val uri = FileUtils.sanitizeURI(publishDiagnosticsParams.getUri)
     val diagnostics = publishDiagnosticsParams.getDiagnostics
+    DiagnosticsManager.updateDiagnostics(uri, diagnostics.asScala)
     EditorEventManager.forUri(uri).foreach(e => e.diagnostics(diagnostics.asScala))
   }
 
