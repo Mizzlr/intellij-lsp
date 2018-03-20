@@ -34,15 +34,15 @@ lazy val commonSettings = Seq(
 )
 
 lazy val root = (project in file(".")).
-  aggregate(`intellij-lsp`, `intellij-lsp-dotty`)
+  aggregate(`intellij-lsp`)
 
 lazy val `intellij-lsp` = (project in file("intellij-lsp")).
   enablePlugins(SbtIdeaPlugin). // See https://github.com/JetBrains/sbt-idea-plugin for documentation
   settings(commonSettings).
   settings(
-    name := "intellij-lsp",
+    name := "df-intellij-lsp",
     description := "Language Server Protocol plugin for IntelliJ IDEA",
-    version := "1.3.0",
+    version := "1.0.0",
 
     ideaInternalPlugins := Seq(
       "IntelliLang",
@@ -56,18 +56,18 @@ lazy val `intellij-lsp` = (project in file("intellij-lsp")).
     ),
   )
 
-lazy val `intellij-lsp-dotty` = (project in file("intellij-lsp-dotty")).
-  enablePlugins(SbtIdeaPlugin).
-  dependsOn(`intellij-lsp`).
-  settings(commonSettings).
-  settings(
-    name := "intellij-lsp-dotty",
-    description := "Dotty Language Server plugin for IntelliJ IDEA",
-    version := "0.1.0-SNAPSHOT",
-
-    libraryDependencies ++= Seq(
-      scalaOrganization.value % "scala-reflect" % scalaVersion.value,
-      "org.scalameta" %% "scalameta" % "1.8.0",
-      "org.scalastyle" %% "scalastyle" % "1.0.0",
-    ),
-  )
+// lazy val `intellij-lsp-dotty` = (project in file("intellij-lsp-dotty")).
+//   enablePlugins(SbtIdeaPlugin).
+//   dependsOn(`intellij-lsp`).
+//   settings(commonSettings).
+//   settings(
+//     name := "intellij-lsp-dotty",
+//     description := "Dotty Language Server plugin for IntelliJ IDEA",
+//     version := "0.1.0-SNAPSHOT",
+//
+//     libraryDependencies ++= Seq(
+//       scalaOrganization.value % "scala-reflect" % scalaVersion.value,
+//       "org.scalameta" %% "scalameta" % "1.8.0",
+//       "org.scalastyle" %% "scalastyle" % "1.0.0",
+//     ),
+//   )
