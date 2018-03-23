@@ -74,13 +74,13 @@ class LSPInspection extends LocalInspectionTool {
     new LSPInspectionPanel(getShortName, this)
   }
 
-  override def getShortName: String = "Language Server"
+  override def getShortName: String = "LSP"
 
-  override def getID: String = "Language Server"
+  override def getID: String = "LSP"
 
-  override def getGroupDisplayName: String = "Language Server"
+  override def getGroupDisplayName: String = "LSP"
 
-  override def getStaticDescription: String = "Reports errors by the Language Server server."
+  override def getStaticDescription: String = "Reports errors by the Language Server server"
 
   override def isEnabledByDefault: Boolean = true
 

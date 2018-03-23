@@ -18,15 +18,15 @@ cd ../..
 sbt package
 
 cd intellij-lsp/tmp
-jar -xf ../target/scala-2.12/df-intellij-lsp_2.12-1.0.0.jar
+jar -xf ../target/scala-2.12/intellij-language-server_2.12-1.0.0.jar
 echo "Manifest-Version: 1.0
-Implementation-Title: df-intellij-lsp
+Implementation-Title: intellij-language-server
 Implementation-Version: 1.0.0
-Specification-Vendor: df-intellij-lsp
-Specification-Title: df-intellij-lsp
-Implementation-Vendor-Id: df-intellij-lsp
+Specification-Vendor: intellij-language-server
+Specification-Title: intellij-language-server
+Implementation-Vendor-Id: intellij-language-server
 Specification-Version: 1.0.0
-Implementation-Vendor: df-intellij-lsp" > META-INF/MANIFEST.MF
+Implementation-Vendor: intellij-language-server" > META-INF/MANIFEST.MF
 
 cd ../..
 jar -cf Intellij-Language-Server.jar -C intellij-lsp/tmp .

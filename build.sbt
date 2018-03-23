@@ -40,7 +40,7 @@ lazy val `intellij-lsp` = (project in file("intellij-lsp")).
   enablePlugins(SbtIdeaPlugin). // See https://github.com/JetBrains/sbt-idea-plugin for documentation
   settings(commonSettings).
   settings(
-    name := "df-intellij-lsp",
+    name := "intellij-language-server",
     description := "Language Server Protocol plugin for IntelliJ IDEA",
     version := "1.0.0",
 
