@@ -1,5 +1,5 @@
 <idea-plugin>
-  <id>com.github.gtache.lsp.rust</id>
+  <id>com.github.mizzlr.lsp.rust</id>
   <name>Rust LSP Support</name>
   <version>1.0</version>
   <vendor email="guillaume.tache@hotmail.com" url="https://github.com/gtache">gtache</vendor>
@@ -26,13 +26,13 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-      <preloadingActivity implementation="com.github.gtache.lsp.rust.RustPreloadingActivity" id="com.github.gtache.lsp.rust.RustPreloadingActivity" />
+      <preloadingActivity implementation="com.github.mizzlr.lsp.rust.RustPreloadingActivity" id="com.github.mizzlr.lsp.rust.RustPreloadingActivity" />
   </extensions>
 
   <actions>
     <!-- Add your actions here -->
   </actions>
 
-  <depends>com.github.gtache.lsp</depends>
+  <depends>com.github.mizzlr.lsp</depends>
 
 </idea-plugin>

@@ -29,5 +29,5 @@ Specification-Version: 1.0.0
 Implementation-Vendor: df-intellij-lsp" > META-INF/MANIFEST.MF
 
 cd ../..
-jar -cf Devfactory-Intellij-LSP-Client.jar -C intellij-lsp/tmp .
+jar -cf Intellij-Language-Server.jar -C intellij-lsp/tmp .
 rm -rf intellij-lsp/tmp

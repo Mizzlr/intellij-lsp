@@ -1,10 +1,10 @@
 <idea-plugin>
-    <id>com.github.gtache.lsp</id>
-    <name>Devfactory Language Server</name>
-    <version>1.4.0</version>
+    <id>com.github.mizzlr.lsp</id>
+    <name>IntelliJ Language Server</name>
+    <version>1.0.0</version>
     <vendor email="mushtaqueahamed94@gmail.com" url="https://github.com/Mizzlr">Mizzlr</vendor>
 
-    <description>Devfactory Language Server support for IntelliJ</description>
+    <description>Language Server support for IntelliJ</description>
 
     <change-notes>
         <!-- <![CDATA[
@@ -30,67 +30,67 @@
     <depends>com.intellij.modules.lang</depends>
 
     <extensionPoints>
-        <extensionPoint interface="com.github.gtache.lsp.contributors.icon.LSPIconProvider" name="LSPIconProvider"/>
+        <extensionPoint interface="com.github.mizzlr.lsp.contributors.icon.LSPIconProvider" name="LSPIconProvider"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <applicationConfigurable instance="com.github.gtache.lsp.settings.MiscSettings" id="MiscSettings"
+        <applicationConfigurable instance="com.github.mizzlr.lsp.settings.MiscSettings" id="MiscSettings"
                                  groupId="language" displayName="Language Server Protocol"/>
         <applicationConfigurable parentId="MiscSettings" id="ServerSettings" displayName="Server Definitions"
-                                 instance="com.github.gtache.lsp.settings.ServersSettings"/>
+                                 instance="com.github.mizzlr.lsp.settings.ServersSettings"/>
         <applicationConfigurable parentId="MiscSettings" id="TimeoutSettings" displayName="Timeouts"
-                                 instance="com.github.gtache.lsp.settings.TimeoutSettings"/>
+                                 instance="com.github.mizzlr.lsp.settings.TimeoutSettings"/>
         <applicationConfigurable parentId="MiscSettings" id="CoursierSettings" displayName="Coursier"
-                                 instance="com.github.gtache.lsp.settings.CoursierSettings"/>
+                                 instance="com.github.mizzlr.lsp.settings.CoursierSettings"/>
 
         <applicationService id="LSPState"
-                            serviceInterface="com.github.gtache.lsp.settings.LSPState"
-                            serviceImplementation="com.github.gtache.lsp.settings.LSPState"/>
+                            serviceInterface="com.github.mizzlr.lsp.settings.LSPState"
+                            serviceImplementation="com.github.mizzlr.lsp.settings.LSPState"/>
 
-        <gotoSymbolContributor implementation="com.github.gtache.lsp.contributors.gotoo.LSPGotoSymbolContributor"
+        <gotoSymbolContributor implementation="com.github.mizzlr.lsp.contributors.gotoo.LSPGotoSymbolContributor"
                                id="LSPGotoSymbolContributor"/>
-        <gotoClassContributor implementation="com.github.gtache.lsp.contributors.gotoo.LSPGotoClassContributor"
+        <gotoClassContributor implementation="com.github.mizzlr.lsp.contributors.gotoo.LSPGotoClassContributor"
                               id="LSPGotoClassContributor"/>
-        <typedHandler implementation="com.github.gtache.lsp.editor.listeners.LSPTypedHandler" id="LSPTypedHandler"/>
-        <completion.contributor implementationClass="com.github.gtache.lsp.contributors.LSPCompletionContributor"
+        <typedHandler implementation="com.github.mizzlr.lsp.editor.listeners.LSPTypedHandler" id="LSPTypedHandler"/>
+        <completion.contributor implementationClass="com.github.mizzlr.lsp.contributors.LSPCompletionContributor"
                                 id="LSPCompletionContributor" language="any"/>
-        <inspectionToolProvider implementation="com.github.gtache.lsp.contributors.inspection.LSPInspectionProvider"
+        <inspectionToolProvider implementation="com.github.mizzlr.lsp.contributors.inspection.LSPInspectionProvider"
                                 id="LSPInspectionProvider"/>
         <fileDocumentSynchronizationVetoer
-                implementation="com.github.gtache.lsp.editor.listeners.LSPFileDocumentSynchronizationVetoer"
+                implementation="com.github.mizzlr.lsp.editor.listeners.LSPFileDocumentSynchronizationVetoer"
                 id="LSPFileDocumentSynchronizationVetoer"/>
 
-        <renameHandler implementation="com.github.gtache.lsp.contributors.rename.LSPRenameHandler" id="LSPRenameHandler"
+        <renameHandler implementation="com.github.mizzlr.lsp.contributors.rename.LSPRenameHandler" id="LSPRenameHandler"
                        order="first"/>
-        <renamePsiElementProcessor implementation="com.github.gtache.lsp.contributors.rename.LSPRenameProcessor"
+        <renamePsiElementProcessor implementation="com.github.mizzlr.lsp.contributors.rename.LSPRenameProcessor"
                                    id="LSPRenameProcessor" order="first"/>
-        <lang.documentationProvider implementationClass="com.github.gtache.lsp.contributors.LSPDocumentationProvider"
+        <lang.documentationProvider implementationClass="com.github.mizzlr.lsp.contributors.LSPDocumentationProvider"
                                     id="LSPDocumentationProvider" language="TEXT"/>
 
-        <!--        <lang.findUsagesProvider implementationClass="com.github.gtache.lsp.contributors.LSPFindUsagesProvider" id="LSPFindUsagesProvider" language="TEXT" order="first" />
-                <findUsagesHandlerFactory implementation="com.github.gtache.lsp.contributors.LSPFindUsagesHandlerFactory" id="LSPFindUsagesHandlerFactory" />-->
+        <!--        <lang.findUsagesProvider implementationClass="com.github.mizzlr.lsp.contributors.LSPFindUsagesProvider" id="LSPFindUsagesProvider" language="TEXT" order="first" />
+                <findUsagesHandlerFactory implementation="com.github.mizzlr.lsp.contributors.LSPFindUsagesHandlerFactory" id="LSPFindUsagesHandlerFactory" />-->
     </extensions>
 
     <actions>
-        <action class="com.github.gtache.lsp.actions.LSPQuickDocAction" id="QuickJavaDoc" text="Quick Doc"
+        <action class="com.github.mizzlr.lsp.actions.LSPQuickDocAction" id="QuickJavaDoc" text="Quick Doc"
                 overrides="true"/> <!-- Overrides quickdoc if possible, otherwise delegates to it -->
-        <action class="com.github.gtache.lsp.actions.LSPReformatAction" id="ReformatCode" use-shortcut-of="ReformatCode"
+        <action class="com.github.mizzlr.lsp.actions.LSPReformatAction" id="ReformatCode" use-shortcut-of="ReformatCode"
                 overrides="true"/>
-        <action class="com.github.gtache.lsp.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
+        <action class="com.github.mizzlr.lsp.actions.LSPShowReformatDialogAction" id="ShowReformatFileDialog"
                 use-shortcut-of="ShowReformatFileDialog" overrides="true"/>
-        <action class="com.github.gtache.lsp.actions.LSPReferencesAction"
+        <action class="com.github.mizzlr.lsp.actions.LSPReferencesAction"
                 id="LSPFindUsages">
             <keyboard-shortcut first-keystroke="shift alt F7" keymap="$default"/>
         </action>
-        <action class="com.github.gtache.lsp.actions.LSPRefactoringAction" id="LSPRefactoringAction">
+        <action class="com.github.mizzlr.lsp.actions.LSPRefactoringAction" id="LSPRefactoringAction">
             <keyboard-shortcut first-keystroke="shift alt F6" keymap="$default"/>
         </action>
     </actions>
 
     <application-components>
         <component>
-            <implementation-class>com.github.gtache.lsp.PluginMain</implementation-class>
+            <implementation-class>com.github.mizzlr.lsp.PluginMain</implementation-class>
         </component>
     </application-components>
     <project-components>

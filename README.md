@@ -73,9 +73,9 @@ class RustPreloadingActivity extends PreloadingActivity {
 With plugin.xml containing
 ```
 <extensions defaultExtensionNs="com.intellij">
-      <preloadingActivity implementation="com.github.gtache.lsp.rust.RustPreloadingActivity" id="com.github.gtache.lsp.rust.RustPreloadingActivity" />
+      <preloadingActivity implementation="com.github.mizzlr.lsp.rust.RustPreloadingActivity" id="com.github.mizzlr.lsp.rust.RustPreloadingActivity" />
   </extensions>
-<depends>com.github.gtache.lsp</depends>
+<depends>com.github.mizzlr.lsp</depends>
 ```
 
 The current concrete classes are :      
