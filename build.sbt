@@ -3,18 +3,6 @@ ideaBuild in ThisBuild := "173.3727.127" // Released November 28, 2017
 // Download the IDEA SDK on startup
 onLoad in Global := ((s: State) => { "updateIdea" :: s}) compose (onLoad in Global).value
 
-// assemblyMergeStrategy in assembly := {
-//   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-//   case x => MergeStrategy.first
-// }
-
-assemblyMergeStrategy in assembly := {
-  case PathList("/Users/mizzlr/intellij-lsp/idea/173.3727.127/lib/") => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (assemblyMergeStrategy in assembly).value
-    oldStrategy(x)
-}
-
 lazy val commonSettings = Seq(
   scalaSource       in Compile  := baseDirectory.value / "src",
   scalaSource       in Test     := baseDirectory.value / "test",

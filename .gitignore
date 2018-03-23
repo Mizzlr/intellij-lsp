@@ -8,3 +8,4 @@ langserver.*
 **/.project
 **/tmp
 lib/
+!tmp

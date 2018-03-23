@@ -1,13 +1,13 @@
 <idea-plugin>
     <id>com.github.gtache.lsp</id>
-    <name>LSP Support</name>
-    <version>1.3.0</version>
-    <vendor email="guillaume.tache@epfl.ch" url="https://github.com/gtache">gtache</vendor>
+    <name>Devfactory Language Server</name>
+    <version>1.4.0</version>
+    <vendor email="mushtaqueahamed94@gmail.com" url="https://github.com/Mizzlr">Mizzlr</vendor>
 
-    <description>Adds LSP (Language Server Protocol) support for IntelliJ</description>
+    <description>Devfactory Language Server support for IntelliJ</description>
 
     <change-notes>
-        <![CDATA[
+        <!-- <![CDATA[
         -formatting, rangeFormatting, onTypeFormatting seem to be working<br>
         -signatureHelp seems to be working<br>
         -codeAction seems to be working<br>
@@ -18,7 +18,7 @@
         -Better handling of server crashes<br>
         -Fixes server icons position on multiple projects<br>
         -Updates Coursier and Flexmark
-]]>
+]]> -->
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->

@@ -1,7 +1,7 @@
 package com.github.gtache.lsp.utils
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.editor.{Editor, LogicalPosition}
+import com.intellij.openapi.editor.{Editor, LogicalPosition, Document}
 import com.intellij.openapi.util.TextRange
 import org.eclipse.lsp4j.Position
 
@@ -68,6 +68,15 @@ object DocumentUtils {
     math.min(math.max(offset, 0), docLength)
   }
 
+  def LSPPosToOffset(document: Document, pos: Position): Int = {
+    val offset = logicalPositionToOffset(document, LSPToLogicalPos(pos))
+    val docLength = document.getTextLength
+    if (offset > docLength) {
+      LOG.warn("Offset greater than text length : " + offset + " > " + docLength)
+    }
+    math.min(math.max(offset, 0), docLength)
+  }
+
   /**
     * Transforms an LSP position to a LogicalPosition
     *
@@ -76,5 +85,14 @@ object DocumentUtils {
     */
   def LSPToLogicalPos(position: Position): LogicalPosition = {
     new LogicalPosition(position.getLine, position.getCharacter)
+  }
+
+  def logicalPositionToOffset(document: Document, pos: LogicalPosition): Int = {
+      if (document.getLineCount() == 0) return 0
+      if (pos.line < 0) throw new IndexOutOfBoundsException("Wrong line: " + pos.line)
+      if (pos.column < 0) throw new IndexOutOfBoundsException("Wrong column:" + pos.column)
+      if (pos.line >= document.getLineCount) return document.getTextLength
+      val start = document.getLineStartOffset(pos.line)
+      return start + pos.column
   }
 }

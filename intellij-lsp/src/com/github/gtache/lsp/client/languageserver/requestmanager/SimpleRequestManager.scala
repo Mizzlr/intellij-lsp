@@ -34,7 +34,10 @@ class SimpleRequestManager(wrapper: LanguageServerWrapper, server: LanguageServe
 
   override def applyEdit(params: ApplyWorkspaceEditParams): CompletableFuture[ApplyWorkspaceEditResponse] = client.applyEdit(params)
 
-  override def publishDiagnostics(publishDiagnosticsParams: PublishDiagnosticsParams): Unit = client.publishDiagnostics(publishDiagnosticsParams)
+  override def publishDiagnostics(publishDiagnosticsParams: PublishDiagnosticsParams): Unit = {
+      // LOG.info("Publishing diagnostics with params: " + publishDiagnosticsParams)
+      client.publishDiagnostics(publishDiagnosticsParams)
+  }
 
   //General
   override def initialize(params: InitializeParams): CompletableFuture[InitializeResult] = {

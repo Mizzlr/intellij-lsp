@@ -51,6 +51,7 @@ class LanguageClientImpl extends LanguageClient {
   override def publishDiagnostics(publishDiagnosticsParams: PublishDiagnosticsParams): Unit = {
     val uri = FileUtils.sanitizeURI(publishDiagnosticsParams.getUri)
     val diagnostics = publishDiagnosticsParams.getDiagnostics
+    // LOG.info("publishing diagnostics for uri: " + uri + "diagnostics:" + diagnostics)
     DiagnosticsManager.updateDiagnostics(uri, diagnostics.asScala)
     EditorEventManager.forUri(uri).foreach(e => e.diagnostics(diagnostics.asScala))
   }

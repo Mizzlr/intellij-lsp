@@ -19,48 +19,52 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.Editor
 import com.github.gtache.lsp.utils.DocumentUtils
+import com.intellij.openapi.editor.impl.DocumentImpl
+
+import com.intellij.openapi.diagnostic.Logger
+import java.lang.CharSequence
 
 /**
   * The inspection tool for LSP
   */
 class LSPInspection extends LocalInspectionTool {
-
+  private val LOG: Logger = Logger.getInstance(classOf[LSPInspection])
   override def checkFile(psiFile: PsiFile, inspectionManager: InspectionManager, isOnTheFly: Boolean): Array[ProblemDescriptor] = {
     val virtualFile = psiFile.getVirtualFile
+    // LOG.info("LSP inspection tool triggered for file: " + psiFile)
     if (PluginMain.isExtensionSupported(virtualFile.getExtension)) {
       val uri = FileUtils.VFSToURI(virtualFile)
+      // LOG.info("Fetching diagnostics for file: " + uri)
 
-        def descriptorsForManager(diagnostics: Iterable[Diagnostic]): Array[ProblemDescriptor] = {
-            val document: Document = PsiDocumentManager.getInstance(psiFile.getProject).getDocument(psiFile)
-            val editor: Editor = EditorFactory.getInstance.createViewer(document)
-            diagnostics.collect { case diagnostic =>
-                val start = DocumentUtils.LSPPosToOffset(editor, diagnostic.getRange.getStart)
-                val end = DocumentUtils.LSPPosToOffset(editor, diagnostic.getRange.getEnd)
-                if (start < end) {
-                    val name = editor.getDocument.getText(new TextRange(start, end))
-                    val severity = diagnostic.getSeverity match {
-                        case DiagnosticSeverity.Error => ProblemHighlightType.ERROR
-                        case DiagnosticSeverity.Warning => ProblemHighlightType.GENERIC_ERROR_OR_WARNING
-                        case DiagnosticSeverity.Information => ProblemHighlightType.INFORMATION
-                        case DiagnosticSeverity.Hint => ProblemHighlightType.INFORMATION
-                        case _ => null
-                    }
-                    val element = LSPPsiElement(name, editor.getProject, start, end, psiFile)
-                    inspectionManager.createProblemDescriptor(element, null.asInstanceOf[TextRange], diagnostic.getMessage, severity, isOnTheFly, null)
-              } else null
-           }.toArray.filter(d => d != null)
-        }
+    def publishDiagnostics(diagnostics: Iterable[Diagnostic]): Array[ProblemDescriptor] = {
+        // LOG.info("Publishing diagnostics: " + diagnostics)
+        // val document: Document = PsiDocumentManager.getInstance(psiFile.getProject).getDocument(psiFile)
+        val document: Document = new DocumentImpl(psiFile.getText.asInstanceOf[CharSequence], true)
+        // val editor: Editor = EditorFactory.getInstance.createViewer(document)
+        diagnostics.collect { case diagnostic =>
+            val start = DocumentUtils.LSPPosToOffset(document, diagnostic.getRange.getStart)
+            val end = DocumentUtils.LSPPosToOffset(document, diagnostic.getRange.getEnd)
+            if (start < end) {
+                val name = document.getText(new TextRange(start, end))
+                val severity = diagnostic.getSeverity match {
+                    case DiagnosticSeverity.Error => ProblemHighlightType.ERROR
+                    case DiagnosticSeverity.Warning => ProblemHighlightType.GENERIC_ERROR_OR_WARNING
+                    case DiagnosticSeverity.Information => ProblemHighlightType.INFORMATION
+                    case DiagnosticSeverity.Hint => ProblemHighlightType.INFORMATION
+                    case _ => null
+                }
+                val element = LSPPsiElement(name, psiFile.getProject, start, end, psiFile)
+                inspectionManager.createProblemDescriptor(element, null.asInstanceOf[TextRange], diagnostic.getMessage, severity, isOnTheFly, null)
+          } else null
+       }.toArray.filter(d => d != null)
+    }
 
       DiagnosticsManager.fetchDiagnostics(uri) match {
-        case Some(m) =>
-          descriptorsForManager(m)
+        case Some(diagnostics) =>
+          publishDiagnostics(diagnostics)
         case None =>
-          if (isOnTheFly) {
             super.checkFile(psiFile, inspectionManager, isOnTheFly)
-          } else {
-            super.checkFile(psiFile, inspectionManager, isOnTheFly)
-          }
-      }
+        }
     } else super.checkFile(psiFile, inspectionManager, isOnTheFly)
   }
 
@@ -70,52 +74,14 @@ class LSPInspection extends LocalInspectionTool {
     new LSPInspectionPanel(getShortName, this)
   }
 
-  override def getShortName: String = "langserver"
+  override def getShortName: String = "Devfactory Language Server"
 
-  override def getID: String = "langserver"
+  override def getID: String = "Devfactory Language Server"
 
-  override def getGroupDisplayName: String = "langserver"
+  override def getGroupDisplayName: String = "Devfactory Language Server"
 
-  override def getStaticDescription: String = "Reports errors by the LSP server"
+  override def getStaticDescription: String = "Reports errors by the Devfactory Language Server server"
 
   override def isEnabledByDefault: Boolean = true
 
 }
-
-/**
-  * Get all the ProblemDescriptor given an EditorEventManager
-  * Look at the DiagnosticHighlights, create dummy PsiElement for each, create descriptor using it
-  *
-  * @param m The inspectionManager
-  * @return The ProblemDescriptors
-  */
-// def descriptorsForManager(m: EditorEventManager): Array[ProblemDescriptor] = {
-//   val diagnostics = m.getDiagnostics
-//   diagnostics.collect { case DiagnosticRangeHighlighter(rangeHighlighter, diagnostic) =>
-//     val start = rangeHighlighter.getStartOffset
-//     val end = rangeHighlighter.getEndOffset
-//     if (start < end) {
-//       val name = m.editor.getDocument.getText(new TextRange(start, end))
-//       val severity = diagnostic.getSeverity match {
-//         case DiagnosticSeverity.Error => ProblemHighlightType.ERROR
-//         case DiagnosticSeverity.Warning => ProblemHighlightType.GENERIC_ERROR_OR_WARNING
-//         case DiagnosticSeverity.Information => ProblemHighlightType.INFORMATION
-//         case DiagnosticSeverity.Hint => ProblemHighlightType.INFORMATION
-//         case _ => null
-//       }
-//       val element = LSPPsiElement(name, m.editor.getProject, start, end, psiFile)
-//       val commands = m.codeAction(element)
-//       inspectionManager.createProblemDescriptor(element, null.asInstanceOf[TextRange], diagnostic.getMessage, severity, isOnTheFly,
-//         (if (commands != null) commands.map(c => new LSPQuickFix(uri, c)).toArray else null): _*)
-//     } else null
-//   }.toArray.filter(d => d != null)
-// }
-
-
-/*val descriptor = new OpenFileDescriptor(inspectionManager.getProject, virtualFile)
-ApplicationUtils.writeAction(() => FileEditorManager.getInstance(inspectionManager.getProject).openTextEditor(descriptor, false))
-EditorEventManager.forUri(uri) match {
-  case Some(m) => descriptorsForManager(m)
-  case None => super.checkFile(psiFile, inspectionManager, isOnTheFly)
-}*/
-//TODO need dispatch thread
